@@ -19,11 +19,11 @@
 #
 # Usage:
 #
-# docker build -t crops/chameleonsocks -f Dockerfile .
+# docker build -t mcastelino/chameleonsocks -f Dockerfile .
 
-FROM debian:wheezy
-MAINTAINER Todor Minchev <todor.minchev@linux.intel.com>
-ENV CHAMELEONSOCKS_VERSION 1.2
+FROM debian:buster
+MAINTAINER Manohar R Castelino <manohar.r.castelino@intel.com>
+ENV CHAMELEONSOCKS_VERSION v1.3
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,6 +32,12 @@ RUN apt-get update && apt-get install -y \
 	python \
 	python-pip \
 	iptables && pip install iptools
+
+# https://wiki.debian.org/iptables
+# NOTE: Debian Buster uses the nftables framework by default.
+# Switching to the legacy version:
+RUN update-alternatives --set iptables /usr/sbin/iptables-legacy
+RUN update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
 RUN mkdir -p /tmp/chameleonsocks/confs/
 COPY confs /tmp/chameleonsocks/confs/
