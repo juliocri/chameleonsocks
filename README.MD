@@ -1,4 +1,5 @@
 ![Docker Image CI](https://github.com/mcastelino/chameleonsocks/workflows/Docker%20Image%20CI/badge.svg)
+![Upload Release Asset](https://github.com/mcastelino/chameleonsocks/workflows/Upload%20Release%20Asset/badge.svg)
 
 ## CHAMELEONSOCKS
 
