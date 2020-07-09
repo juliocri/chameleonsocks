@@ -31,6 +31,10 @@ DAEMON=/usr/sbin/redsocks # Introduce the server's location here
 DAEMON_ARGS=""             # Arguments to run the daemon with
 PIDFILE=/run/$NAME/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
+IPTABLES=1
+
+# Use iptables or nftables
+iptables -L nat &> /dev/null || IPTABLES=
 
 # Exit if the package is not installed
 [ -x $DAEMON ] || exit 0
@@ -51,7 +55,9 @@ SCRIPTNAME=/etc/init.d/$NAME
 do_start()
 {
 
-######################## IPTABLE RULES ############################
+######################## {IP,NF}TABLE RULES ############################
+
+if [ ! -z $IPTABLES ]; then # iptables
 
 ##            Create CHAMELEONSOCKS chain                             ##
 
@@ -81,7 +87,42 @@ fi;
 
 	iptables -t nat -A CHAMELEONSOCKS -p tcp -j REDIRECT --to-ports 1080
 
-####################### IPTABLE RULES END ########################
+else # nftables
+
+##    Create rules backup for restore
+	nft list ruleset > nft-backup-rules
+
+##            Create CHAMELEONSOCKS chain                             ##
+
+	nft add chain ip nat CHAMELEONSOCKS
+
+##     Redirect all outgoing host traffic to CHAMELEONSOCKS           ##
+
+	nft add rule ip nat OUTPUT ip protocol tcp jump CHAMELEONSOCKS
+
+##     Redirect all outgoing container traffic to CHAMELEONSOCKS      ##
+
+	nft add rule ip nat PREROUTING ip protocol tcp meta iifname "docker0" jump CHAMELEONSOCKS
+
+##    Add proxy exceptions from config file    ##
+
+	awk -F, '{print $1}' /etc/chameleonsocks.exceptions | awk 'NF' |  \
+	xargs -I {} nft add rule ip nat CHAMELEONSOCKS ip daddr {} return
+
+##    Add proxy exceptions from PAC file    ##
+
+if [ ! -z "$PAC_URL" ]; then
+	curl $PAC_URL | python /etc/pac.py |  \
+	xargs -I {} nft add rule ip nat CHAMELEONSOCKS ip daddr {} return
+fi;
+
+##     Redirect all unhandles addresses to the proxy             ##
+
+	nft add rule ip nat CHAMELEONSOCKS ip protocol tcp redirect to 1080
+
+fi
+
+####################### {IP/NF}TABLE RULES END ########################
 
 
 	# Take care of pidfile permissions
@@ -111,11 +152,25 @@ do_stop()
 
 ################### CLEAR IPTABLE RULES ##########################################
 
+if [ ! -z $IPTABLES ]; then # iptables
+
 	iptables -t nat -F CHAMELEONSOCKS
 	iptables -t nat -D CHAMELEONSOCKS -p tcp -j REDIRECT --to-ports 1080
 	iptables -t nat -D OUTPUT -p tcp -j CHAMELEONSOCKS
 	iptables -t nat -D PREROUTING -i docker0 -p tcp -j CHAMELEONSOCKS
 	iptables -t nat -X CHAMELEONSOCKS
+
+else # nftables
+
+##    flush nft rules
+
+	nft flush ruleset
+
+##    Restore backup nft rules
+
+	nft -f nft-backup-rules
+
+fi
 
 ################### CLEAR IPTABLE RULES END ######################################
 
