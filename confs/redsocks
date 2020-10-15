@@ -34,7 +34,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 IPTABLES=1
 
 # Use iptables or nftables
-iptables -L nat &> /dev/null || IPTABLES=
+iptables -L &> /dev/null || IPTABLES=
 
 # Exit if the package is not installed
 [ -x $DAEMON ] || exit 0
