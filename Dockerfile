@@ -19,18 +19,18 @@
 #
 # Usage:
 #
-# docker build -t mcastelino/chameleonsocks -f Dockerfile .
+# docker build -t juliocri/chameleonsocks -f Dockerfile .
 
-FROM debian:buster
-MAINTAINER Manohar R Castelino <manohar.r.castelino@intel.com>
-ENV CHAMELEONSOCKS_VERSION v1.3
+FROM debian:bullseye
+MAINTAINER Julio C Rivera <julio.c.rivera.gonzalez@intel.com>
+ENV CHAMELEONSOCKS_VERSION v1.5
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
 	redsocks \
 	curl \
 	python \
-	python-pip \
+	python3-pip \
 	iptables && pip install iptools
 
 # https://wiki.debian.org/iptables

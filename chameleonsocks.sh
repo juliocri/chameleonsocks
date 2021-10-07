@@ -66,11 +66,11 @@ else
   fi
 fi
 
-VERSION=v1.3
-IMAGE=mcastelino/chameleonsocks:$VERSION
+VERSION=v1.5
+IMAGE=juliocri/chameleonsocks:$VERSION
 DOCKER_UI=uifd/ui-for-docker
-DEFAULT_EXCEPTIONS=https://raw.githubusercontent.com/mcastelino/chameleonsocks/master/confs/chameleonsocks.exceptions
-DOCKER_IMAGE=https://github.com/mcastelino/chameleonsocks/releases/download/$VERSION/chameleonsocks.tar.gz
+DEFAULT_EXCEPTIONS=https://raw.githubusercontent.com/juliocri/chameleonsocks/master/confs/chameleonsocks.exceptions
+DOCKER_IMAGE=https://github.com/juliocri/chameleonsocks/releases/download/$VERSION/chameleonsocks.tar.gz
 
 usage () {
   echo -e "\nUsage \n\n$0 [option]\n"
@@ -101,7 +101,7 @@ remove_container () {
 uninstall () {
   remove_container chameleonsocks
   echo -e "\nRemove chameleonsocks image"
-  docker rmi -f $(docker images | awk '$1 ~ /mcastelino[/]chameleonsocks/ { print $3 }') || \
+  docker rmi -f $(docker images | awk '$1 ~ /juliocri[/]chameleonsocks/ { print $3 }') || \
   { echo "Removing $IMAGE image failed" ; exit 1; }
 }
 

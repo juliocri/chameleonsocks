@@ -1,5 +1,5 @@
-![Docker Image CI](https://github.com/mcastelino/chameleonsocks/workflows/Docker%20Image%20CI/badge.svg)
-![Upload Release Asset](https://github.com/mcastelino/chameleonsocks/workflows/Upload%20Release%20Asset/badge.svg)
+![Docker Image CI](https://github.com/juliocri/chameleonsocks/workflows/Docker%20Image%20CI/badge.svg)
+![Upload Release Asset](https://github.com/juliocri/chameleonsocks/workflows/Upload%20Release%20Asset/badge.svg)
 
 ## CHAMELEONSOCKS
 
@@ -11,7 +11,7 @@ CHAMELEONSOCKS provides containerized system-wide redsocks-based TCP redirector 
 ### 1 . Download the installer and make it executable
 
 ```
-https_proxy=https://myproxy.mycomp.com:<port> wget https://raw.githubusercontent.com/mcastelino/chameleonsocks/master/chameleonsocks.sh && chmod 755 chameleonsocks.sh
+https_proxy=https://myproxy.mycomp.com:<port> wget https://raw.githubusercontent.com/juliocri/chameleonsocks/master/chameleonsocks.sh && chmod 755 chameleonsocks.sh
 ```
 ### 2 . Run the installer with the minimum number of required args
 
@@ -41,7 +41,7 @@ export https_proxy=https://my.proxy.com:port_number
 * **Execute the following command to download the script and to make it executable**
 
 ```
-wget https://raw.githubusercontent.com/mcastelino/chameleonsocks/master/chameleonsocks.sh && chmod 755 chameleonsocks.sh
+wget https://raw.githubusercontent.com/juliocri/chameleonsocks/master/chameleonsocks.sh && chmod 755 chameleonsocks.sh
 ```
 
 ###  3 . Configure your proxy server and exception rules
@@ -76,7 +76,7 @@ wget https://raw.githubusercontent.com/mcastelino/chameleonsocks/master/chameleo
 and add its absolute path to the EXCEPTIONS variable in chameleonsocks.sh.**
 
   The default execeptions file can be found here:
-  https://github.com/mcastelino/chameleonsocks/blob/master/confs/chameleonsocks.exceptions
+  https://github.com/juliocri/chameleonsocks/blob/master/confs/chameleonsocks.exceptions
 
   Example:<br>
   EXCEPTIONS=/path/to/my/exceptions/chameleonsocks.exceptions
@@ -146,18 +146,18 @@ and add its absolute path to the EXCEPTIONS variable in chameleonsocks.sh.**
 
 *  **Download the installer script with your favourte web browser**
 
-   *  https://raw.githubusercontent.com/mcastelino/chameleonsocks/master/chameleonsocks.sh
+   *  https://raw.githubusercontent.com/juliocri/chameleonsocks/master/chameleonsocks.sh
 
 *  **Download the chameleonsocks image with your favourte web browser**
 
-   *  https://github.com/mcastelino/chameleonsocks/releases/download/v1.2/chameleonsocks-1.2.tar.gz
+   *  https://github.com/juliocri/chameleonsocks/releases/download/v1.5/chameleonsocks.tar.gz
 
 *  **Launch Docker Quickstart Terminal and navige to the directory where the installer and the image were downloaded**
 
 *  **Install chameleonsocks with the following command**
 
   ```
-  ./chameleonsocks.sh --install_local chameleonsocks-1.2.tar.gz
+  ./chameleonsocks.sh --install_local chameleonsocks-1.5.tar.gz
 
   ```
 
@@ -173,7 +173,7 @@ You can tell if you have the initial docker image by doing
 ```
 docker images | grep chameleon
 ```
-and you should see something like: mcastelino/chameleonsocks  VERSION (1.X)...<br>
+and you should see something like: juliocri/chameleonsocks  VERSION (1.X)...<br>
 To try different settings you can either edit the chameleonsocks.sh file or prepend environment variables to the call.
 ```
 PROXY=myproxy.com PAC_URL=http://autoproxy.mycomp.com ./chameleonsocks.sh --start
